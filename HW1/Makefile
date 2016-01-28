@@ -15,12 +15,12 @@ endif
 ########################################################################### 
 # File Declarations
 ########################################################################### 
-BINARIES = hw1-serial hw1-MPI
+BINARIES = hw1
 
 # C, H, and Object Files
-C_FILES = hw1-serial.c
+C_FILES = hw1.c
 H_FILES = 
-O_FILES = hw1-serial.o
+O_FILES = hw1.o
 
 MPI_C_FILES = 
 MPI_H_FILES = 
@@ -34,10 +34,7 @@ all: $(BINARIES)
 janus: $(BINARIES)
 
 hw1-serial: $(O_FILES)
-	$(CC) $(INCFLAGS) -o hw1-serial $(O_FILES) $(LDFLAGS)
-	
-hw1-MPI: $(MPI_O_FILES)
-	$(MPICC) $(INCFLAGS) -o hw1-MPI $(MPI_O_FILES) $(LDFLAGS)
+	$(CC) $(INCFLAGS) -o ./bin/hw1 $(O_FILES) $(LDFLAGS)
 
 clean:
 	/bin/rm -rf core $(O_FILES) $(MPI_O_FILES) $(BINARIES)
