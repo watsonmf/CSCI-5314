@@ -55,4 +55,5 @@ char* read_file(char* inputFile, Sequence* currentSequence, char* lookupTable);
 void search_nucleic_acid(Sequence* currentSequence, char* k_mer, char* reverseComplementKmer, int k);
 void search_amino_acid(Sequence* currentSequence, char* k_mer, int k);
 void print_match(Sequence* currentSequence, int start, int end, char strand);
+void print_sequences(Sequence* currentSequence);
 

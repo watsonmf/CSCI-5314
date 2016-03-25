@@ -1,0 +1,50 @@
+5 most common 3-mer from the 12 sequences in fasta file [sample_5mer.fasta]:
+TTA 12
+TAC 12
+CGG 12
+ACG 12
+ATT 8
+
+5 most common 4-mer from the 12 sequences in fasta file [sample_5mer.fasta]:
+TTAC 12
+TACG 12
+ACGG 12
+CGGT 5
+CGGG 5
+
+5 most common 5-mer from the 12 sequences in fasta file [sample_5mer.fasta]:
+TTACG 12
+TACGG 12
+ACGGG 5
+TTTAC 4
+CTTAC 4
+ACGGT 4
+
+5 most common 6-mer from the 12 sequences in fasta file [sample_5mer.fasta]:
+TTACGG 12
+TACGGG 5
+TTTACG 4
+TACGGT 4
+CTTACG 4
+
+5 most common 7-mer from the 12 sequences in fasta file [sample_5mer.fasta]:
+TTACGGG 5
+TTTACGG 4
+TTACGGT 4
+CTTACGG 4
+TCTTACG 3
+ATTACGG 3
+
+5 most common 8-mer from the 12 sequences in fasta file [sample_5mer.fasta]:
+TCTTACGG 3
+TTTACGGG 2
+TTCTTACG 2
+TTACGGTA 2
+TTACGGGG 2
+TTACGGGC 2
+TACGGTAT 2
+TACGGGCG 2
+CTTACGGT 2
+CTTACGGG 2
+CATTACGG 2
+ATTTACGG 2

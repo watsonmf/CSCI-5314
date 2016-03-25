@@ -103,12 +103,15 @@ int main (int argc, char** argv)
 		exit(EXIT_FAILURE);
 	}
 	
+	//print_sequences(firstSequence);
+	
 	currentSequence = firstSequence;
 
 	if (chromosome == NULL)
 	{
 		while(currentSequence != NULL)
 		{
+			printf("checking %s\n", currentSequence->sequenceName);
 			if (currentSequence->sequenceType == 1)
 			{
 				search_nucleic_acid(currentSequence, nucleicAcidKmer, reverseComplementKmer, k);
@@ -184,7 +187,7 @@ char* read_file(char* inputFile, Sequence* currentSequence, char* lookupTable)
 	}
 	
 	fileBuffer[index++] = '\0';
-	
+	currentSequence->sequenceType = 1;
 	currentSequence->data = &fileBuffer[index];
 	sequenceStart = index;
 	
@@ -223,6 +226,8 @@ char* read_file(char* inputFile, Sequence* currentSequence, char* lookupTable)
 			fileBuffer[index++] = lookupTable[c];
 		}
 	}
+	
+	currentSequence->sequenceLength = index - sequenceStart;
 
 	return fileBuffer;
 }
@@ -235,8 +240,10 @@ void search_nucleic_acid(Sequence* currentSequence, char* k_mer, char* reverseCo
 {
 	int i;
 	int j;
+	float gcContent;
+	int gc = 0;
 	
-	for (i = 0; i < currentSequence->sequenceLength - k; i++)
+	for (i = 0; i <= currentSequence->sequenceLength - k; i++)
 	{
 		if (k_mer[0] & currentSequence->data[i])
 		{
@@ -267,7 +274,21 @@ void search_nucleic_acid(Sequence* currentSequence, char* k_mer, char* reverseCo
 				print_match(currentSequence, i, i + k, '-');
 			}
 		}
+		if (currentSequence->data[i] & 6)
+		{
+			gc++;
+		}
 	}
+	
+	for (; i <= currentSequence->sequenceLength; i++)
+	{
+		if (currentSequence->data[i] & 6)
+		{
+			gc++;
+		}
+	}
+	gcContent = 100 * ((float)gc / currentSequence->sequenceLength);
+	printf("GC content for sequence %s: %.2f\%\n\n", currentSequence->sequenceName, gcContent);
 }
 
 /*
@@ -303,6 +324,24 @@ void search_amino_acid(Sequence* currentSequence, char* k_mer, int k)
 */
 void print_match(Sequence* currentSequence, int start, int end, char strand)
 {
-	printf("%s \tMFW \tNo_Feature_Name \t%d \t%d \t. \t%c \t. No_GFF_Grouping_Attributes\n", currentSequence->sequenceName, start, end, strand);
+	printf("%s \tMFW \tNo_Feature_Name \t%d \t%d \t. \t%c \t. No_GFF_Grouping_Attributes\n", currentSequence->sequenceName, start + 1, end, strand);
 	fflush(stdout);
+}
+
+
+void print_sequences(Sequence* currentSequence)
+{
+	while (currentSequence != NULL)
+	{
+		printf("%s\n", currentSequence->sequenceName);
+		fflush(stdout);
+		
+		for (int i = 0; i < currentSequence->sequenceLength; i++)
+		{
+			printf("%d, ", (int) currentSequence->data[i]);
+		}
+		printf("\n\n");
+		
+		currentSequence = currentSequence->next;
+	}
 }

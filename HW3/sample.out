@@ -1,0 +1,40 @@
+Calculating global alignment for sample_5mer.fasta:
+
+GGATTTTTGTTTACGGGC--GA
+-CA-TTACGGTTCCTGGCAGGG
+====================== (11)
+TTACACAG--TAACTTTACG-GA
+-CACA-AGCATTAC-GGATGAAA
+======================= (12)
+TATTCCATTTCTTACGGTA-T
+T-TACGGTATGATGCATAATT
+===================== (12)
+-T-GATCTTACGGTCTCACTAA
+ATACTTCTTACGG--GGAAGGG
+====================== (12)
+GATATGCTTACGG-GC--GGT-C-T
+---AT--TTACGGCCCAAAGTGCAA
+========================= (13)
+CATCTATTACG-GGGCCTTGA
+GATGAAAT-CGATTTACGGGA
+===================== (12)
+
+
+
+Calculating local alignment for local_sample_5mer.fasta:   //modified fasta file to test local alignment with short sequences
+
+GGATTTTTGTTTACGGGCGA
+--------GTTTACA-----
+==================== (1)
+TTACACAGTAACTTTACGGA
+------GGTAAC-TTA----
+==================== (2)
+TATTCCATTTCTTACGGTAT
+TATTCC----C---C-----
+==================== (7)
+TGATCTTACGGTCTCACTAA
+------TAC--TCTC-C-A-
+==================== (4)
+GATATGCTTACGGGCGGTC--T
+------------GGC--CCAAA
+====================== (6)
