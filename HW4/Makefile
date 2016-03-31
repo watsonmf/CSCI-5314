@@ -4,9 +4,9 @@
 
 CC = gcc
 MPICC = mpicc
-CFLAGS = -std=c99
-INCFLAGS = -I$(HOME)/usr/include -lpopt -lm
-LDFLAGS = -L$(HOME)/usr/lib -lpopt -lm -fopenmp
+CFLAGS = -std=c99 -g3
+INCFLAGS = -I$(HOME)/usr/include -lm
+LDFLAGS = -L$(HOME)/usr/lib -lm
 
 ifeq ($(DEBUG),on)
 	CFLAGS += -DDEBUG

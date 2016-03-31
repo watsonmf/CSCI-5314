@@ -51,12 +51,13 @@ int main (int argc, char** argv)
 				/* handle fasta file argument */
 				fastaFile = optarg;
 				break;
-			case 'g':
-				/* handle global argument */
-				gapPenalty = atoi(optarg);
 			case 's':
 				/* handle scoring matrix argument */
 				scoringMatrixFile = optarg;
+				break;
+			case 'g':
+				/* handle global argument */
+				gapPenalty = atoi(optarg);
 				break;
 			case '?':
 				if (optopt == 'f')
@@ -100,7 +101,7 @@ int main (int argc, char** argv)
 	
 		exit(1);
 	}
-
+	
 	ScoringMatrix* score = read_scoring_file(scoringMatrixFile);
 	
 	char* fileBuffer = read_file(fastaFile, firstSequence, score, &numberOfSequences);
@@ -154,9 +155,9 @@ ScoringMatrix* read_scoring_file(char* scoreFile)
 	
 	if (fgets(line, 256, file) != NULL)
 	{
-		strtok(line, " \t\n");
+		strtok(line, " 	\t\n");
 		
-		while (strtok(NULL, " \t\n") != NULL)
+		while (strtok(NULL, " 	\t\n") != NULL)
 		{
 			scoring->numChars++;
 		}
@@ -169,8 +170,11 @@ ScoringMatrix* read_scoring_file(char* scoreFile)
 	rewind(file);
 	
 	scoring->matrix = malloc(sizeof(int) * (scoring->numChars) * (scoring->numChars));
-	scoring->lookupTable = calloc(128, sizeof(char));
+	scoring->lookupTable = malloc( sizeof(char) * 128 );
 	memset(scoring->lookupTable, -1, sizeof(char) * 128);
+	
+	// setup characters to ignore: space, tab, carriage return, and newline
+	scoring->lookupTable[' '] = scoring->lookupTable['\t'] = scoring->lookupTable['\r'] = scoring->lookupTable['\n'] = -19;
 
 	scoring->lookupTableReverse = malloc (sizeof(char) * (scoring->numChars));
 	
@@ -389,26 +393,38 @@ char* read_file(char* inputFile, Sequence* currentSequence, ScoringMatrix* score
 				currentSequence = currentSequence->next;
 				currentSequence->sequenceName = &fileBuffer[index];
 				currentSequence->sequenceType = 1;
-				while ( (c = fgetc(file)) != '\n')
+				
+				c = fgetc (file);
+				
+				while (c != '\n' && c != '\r')
 				{
 					if (c == ' ' || c == '\t')
 					{
 						fileBuffer[index++] = '\0';
 						currentSequence->sequenceDescription = &fileBuffer[index];
+						
+						while ((c = fgetc(file)) != '\n' && c != '\r')
+						{
+							fileBuffer[index++] = (char) c;
+						}
+						
 					} else
 					{
 						fileBuffer[index++] = (char) c;
+						c = fgetc (file);
 					}
 				}
 				
 				fileBuffer[index++] = '\0';
 				currentSequence->data = &fileBuffer[index];
 				sequenceStart = index;
-			} else if (c == '\n')
+			} else if (score->lookupTable[c] == -19)
 			{
-			}else
+				// ignore characters: space, tab, carriage return, newline
+			} else
 			{
-				printf("Error: character '%c' is not defined in the scoring matrix file. Exiting.\n", c);
+				printf("Error: character '%c' (%d) in sequence %d is not defined in the scoring matrix file. Exiting.\n", c, (int)c, *numberOfSequences);
+				fflush(stdout);
 				exit(1);
 			}
 		} else
